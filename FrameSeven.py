@@ -1,10 +1,10 @@
 #!/bin/python2
 #coding: utf-8
 ##########################################################$
-#			         Feito por Sayseven                   #
+#		    Feito por Sayseven                    #
 #   	FrameSeven: Ferramenta para auxilio de penstest   #
-#		Use com sabedoria, não me responsabilizo por seus #
-#       atos					                          #
+#       Use com sabedoria, não me responsabilizo por seus #
+#       atos					          #
 #                                                         #  
 ##########################################################$
 import socket
