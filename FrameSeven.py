@@ -295,7 +295,7 @@ else:
 if options.scan:
 	banner_portscan()
 	time.sleep(2)
-	ports = range(21, 8080)
+	ports = [21,22,23,25,445,80,443,8080,3306,135,1433,4022]
 	sitescan = alvo
 	portas_abertas = []
 	ipresult = socket.gethostbyname(sitescan)
