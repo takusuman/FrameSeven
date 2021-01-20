@@ -29,7 +29,10 @@ parser.add_option('-l', help="Procurar todos os links dentro do site", dest="lin
 parser.add_option('--sp', help='Scan de portas', dest='scan', metavar='site', action="store_true")
 parser.add_option('--ssmtp', help='Enumerar smpt', dest='smtp', metavar='site',action="store_true")
 parser.add_option('--bftp', help='Brutar fdp', dest='ftp', metavar='site usuario')
-parser.add_option('--bssh', help='Brutar ssh', dest='ssh', metavar='site')
+parser.add_option('--bssh', help='Brutar ssh', dest='ssh', metavar='usuario_alvo')
+parser.add_option('--csqli', help="Checar SQLI", dest='csqli', metavar='url_suspeita')
+parser.add_option('--sqls', help='Sqlmap_Seven, explorar sqli', dest='sqls', metavar='site', action="store_true")
+
 
 (options, args) = parser.parse_args()
 
@@ -59,7 +62,7 @@ def help():
 				|  .-.  | |  .--'(|  '__ ||  .___.' 
 				|  | |  | |  `---.|     |'|  |      
 				`--' `--' `------'`-----' `--'  
-							FrameSeven 1.0 Version 
+							FrameSeven 1.1 Version 
 		Usage: FrameSeven [options]
 		Options:
 			-h, --help		show this help message and exit
@@ -71,7 +74,9 @@ def help():
 			--sp			Scan de portas
 			--ssmpt			Enumerar smtp
 			--bftp			Brutar ftp
-			--bssh			Brutar ssh			
+			--bssh			Brutar ssh
+			--csqli			Checar SQLI
+			--sqls          	Sqlmap_Seven, explorar sqli			
 				 ''')
 		sys.exit(0)
 
@@ -81,7 +86,7 @@ def banner_portscan():
 			88__dP dP   Yb 88__dP   88   `Ybo." dP   `"   dPYb   88Yb88 
 			88"""  Yb   dP 88"Yb    88   o.`Y8b Yb       dP__Yb  88 Y88 
 			88      YbodP  88  Yb   88   8bodP'  YboodP dP""""Yb 88  Y8 
-					FrameSeven 1.0 Version
+					FrameSeven 1.1 Version
 			''')
 
 def banner_diretorio():
@@ -95,7 +100,7 @@ def banner_diretorio():
        |==|  '='   /==|- |==|_  . ,'.|==|_  ,`-._      |==|, | \==\ -    ,_ /|==|_  . ,'.|==|- |\==\ -    ,_ /  
        |==|-,   _`//==/. /==/  /\ ,  )==/ ,     /      /==/ -/  '.='. -   .' /==/  /\ ,  )==/. / '.='. -   .'   
        `-.`.____.' `--`-``--`-`--`--'`--`-----``       `--`--`    `--`--''   `--`-`--`--'`--`-`    `--`--''     
-					                   FrameSeven 1.0 Version
+					                   FrameSeven 1.1 Version
 		''')
 
 
@@ -108,7 +113,7 @@ def banner_admin():
 	.#########.##.....##.##.....##..##..##..####
 	.##.....##.##.....##.##.....##..##..##...###
 	.##.....##.########..##.....##.####.##....##
-			FrameSeven 1.0 Version
+			FrameSeven 1.1 Version
 	''')
 
 
@@ -121,7 +126,7 @@ def banner_smtp():
         	+#+ +#+       +#+   +#+     +#+           
 	#+#    #+# #+#       #+#   #+#     #+#            
 	########  ###       ###   ###     ###   
-			FrameSeven 1.0 Version
+			FrameSeven 1.1 Version
 	''')
 
 def banner_link():
@@ -132,7 +137,7 @@ def banner_link():
 		|  |     |  | |  . `  | |    <       \   \    
 		|  `----.|  | |  |\   | |  .  \  .----)   |   
 		|_______||__| |__| \__| |__|\__\ |_______/    
-				FrameSeven 1.0 Version
+				FrameSeven 1.1 Version
    ''')
 
 
@@ -146,7 +151,7 @@ def banner_ftp():
  	 █         ▄▀        ▄▀       
 	█         █         █         
 	▐         ▐         ▐         
-		FrameSeven 1.0 Version
+		FrameSeven 1.1 Version
 	
 	''')
 
@@ -175,7 +180,7 @@ def banner_ssh():
   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-                   ___     FrameSeven 1.0 Version
+                   ___     FrameSeven 1.1 Version
                    `MM       
                     MM       
     ____     ____   MM  __   
@@ -189,6 +194,21 @@ def banner_ssh():
                            
                            
                            
+	''')
+
+
+def banner_csqli():
+	print(color.green+''' 
+	
+   _____ _                     _       _____  ____  _      _____ 
+  / ____| |                   | |     / ____|/ __ \| |    |_   _|
+ | |    | |__   ___  __ _  ___| | __ | (___ | |  | | |      | |  
+ | |    | '_ \ / _ \/ _` |/ __| |/ /  \___ \| |  | | |      | |  
+ | |____| | | |  __/ (_| | (__|   <   ____) | |__| | |____ _| |_ 
+  \_____|_| |_|\___|\__,_|\___|_|\_\ |_____/ \___\_\______|_____|
+                                 ______                          
+                                |______| 
+				        FrameSeven 1.1 Version
 	''')
 
 
@@ -295,7 +315,7 @@ else:
 if options.scan:
 	banner_portscan()
 	time.sleep(2)
-	ports = range(21, 8080)
+	ports = [21,22,23,25,445,80,443,8080,3306,135,1433,4022]
 	sitescan = alvo
 	portas_abertas = []
 	ipresult = socket.gethostbyname(sitescan)
@@ -413,5 +433,29 @@ if options.ssh:
 		else:
 			print("[+] Senha Encontrada [+] " + linhas)
 			break
+
+
+if options.sqls:
+	os.system("bash -c scripts/sqlmap_seven.sh")
+
+if options.csqli:
+	banner_csqli()
+	url = options.csqli
+	padrao = re.search(r'([\w:/\._-]+\?[\w_-]+=)([\w_-]+)', url)
+	if padrao:
+		injecao = padrao.groups()[0] + '\''
+	else:
+		print("Falha na injeção")
+		sys.exit(1)
+	try:
+		req = requests.get(injecao, headers=cabecalho)
+	except:
+		print("Falha na requisição da injeção")
+	html = req.text
+	falha = 'mysql_fetch_array()' or 'parameter' or 'SQLSTATE' or 'Syntax error' or 'Connection_Mysql_Exception'
+	if falha in html:
+    		print("[+] Vulneravel a sql inject [+]")
+	else:
+    		print("[-] Não vulneravel [-] ")
 
 
