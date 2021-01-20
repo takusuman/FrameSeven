@@ -26,5 +26,9 @@
 			--sqls          	Sqlmap_Seven, explorar sqli
  
 Ex: python FrameSeven.py -u -d -l --bssh admin www.site.com
+
+
 Ex: python FrameSeven.py --csqli http://www.site.com/parametro.php?artist=1 www.site.com
+
+
 Ex: python FrameSeven.py --sqls www.site.com  --> O programa irar pedir a url vulneravel, você especificar por exempo: http://www.site.com/parametro.php?artist=1
