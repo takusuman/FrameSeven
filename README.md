@@ -22,7 +22,7 @@
 			--ssmpt			Enumerar smtp
 			--bftp			Brutar ftp
 			--bssh			Brutar ssh	
-      			--csqli			Checar SQLI
+      		--csqli			Checar SQLI
 			--sqls          	Sqlmap_Seven, explorar sqli
  
 Ex: python FrameSeven.py -u -d -l --bssh admin www.site.com
